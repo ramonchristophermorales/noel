@@ -1,21 +1,17 @@
 {
-  "name": "electron-quick-start",
+  "name": "noel",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
-  "main": "main.js",
+  "description": "Noel electron test application",
+  "main": "app.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/electron/electron-quick-start.git",
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "Noel"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": "Ramon Christopher Morales",
+  "license": "MIT",
   "devDependencies": {
     "electron": "~1.6.2"
   }
