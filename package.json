@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start.git",
+  "repository": "https://github.com/ramonchristophermorales/noel.git",
   "keywords": [
     "Noel"
   ],
