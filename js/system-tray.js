@@ -3,11 +3,12 @@
  * system-tray.js
  */
 
-
 'use strict';
 
 // electron instance
 const electron = require('electron');
+
+'use strict';
 
 const {Tray, Menu} = require('electron').remote;
 

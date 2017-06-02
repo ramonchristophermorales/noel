@@ -11,8 +11,13 @@ window.jQuery = window.$ = require('jquery');
 require('./js/system-tray.js');
 
 // add the window menus
+// just for testing purposes
 require('./js/menus.js');
 
 // add bootstrap scripts
 require('./node_modules/bootstrap/dist/js/bootstrap.min.js');
+
+// add vue and it's components
+require('./js/vue-components/vue-components.js');
+
 
