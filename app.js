@@ -1,3 +1,12 @@
+
+// contains main configuration for this app
+const config = {
+	dbhost: 'localhost',
+	dbuser: 'root',
+	dbpassword: '',
+	dbname: 'noel'
+};
+
 const electron = require('electron')
 // Module to control application life.
 const app = electron.app
@@ -20,7 +29,7 @@ function createWindow () {
 
   // maximize window
   mainWindow.maximize();
-  
+
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
@@ -65,10 +74,26 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
- 
+
 // add live reloading of electron
 // remove in prod
 require('electron-reload')(__dirname, {
   electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
 });
 
+
+// mysql connection for the application
+const mysql = require('mysql');
+const connection = mysql.createConnection({
+  host: config.dbhostname,
+  user: config.dbuser,
+  password: config.dbpassword,
+  database: config.dbname
+});
+connection.connect((err) => {
+  if (err) {
+	  console.log(err);
+		throw err;
+ }
+  console.log('Connected!');
+});

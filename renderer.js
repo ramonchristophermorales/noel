@@ -17,7 +17,15 @@ require('./js/menus.js');
 // add bootstrap scripts
 require('./node_modules/bootstrap/dist/js/bootstrap.min.js');
 
-// add vue and it's components
-require('./js/vue-components/vue-components.js');
+// jexcel
+require('./node_modules/jexcel/dist/js/excel-formula.min.js');
+require('./node_modules/jexcel/dist/js/jquery.csv.min.js');
+require('./node_modules/jexcel/dist/js/jquery.jcalendar.js');
+require('./node_modules/jexcel/dist/js/jquery.jexcel.js');
+
+// other helper functions
+// require('./js/helpers.js');
 
 
+// main script
+require('./js/main.js');

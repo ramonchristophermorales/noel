@@ -1,5 +1,0 @@
-<template>
-testing
-</template>
-
-
