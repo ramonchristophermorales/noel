@@ -5,35 +5,43 @@
 
 var helpers = require('./helpers.js');
 
+var orm = require('./orm.js');
 
-module.exports = new function(){
 
-	this.data =  null;
+module.exports = {
 
-	this.search = null;
+	data: null,
 
-	this.limit = 30; // by default 39
+	search: null,
 
-	this.offset = 0; // by default 0
+	limit: 30, // by default 39
 
-	this.colHeaders = [];
+	offset: 0, // by default 0
 
-	this.init = function() {
+	colHeaders: [],
+
+	init: function() {
+		var eloquent = orm.init();
+		console.log(eloquent);
 
 		// used for search, result data and pagination
-		this.search = helpers.urlParam('search');
-		this.limit = helpers.urlParam('limit');
-		this.offset = helpers.urlParam('offset');
+		search = helpers.urlParam('search');
+		limit = helpers.urlParam('limit');
+		offset = helpers.urlParam('offset');
 
 		module.exports.ready();
-	}
+	},
 
-	this.ready = function() {
+	ready: function() {
 
-		console.log(this.search);
-	}
+		// console.log(search);
+	},
 
-	this.generateTable = function() {
+	getData: function() {
+
+	},
+
+	generateTable: function() {
 		// var data = [
 		// 	['Furnace',1,10000,'=B1*C1'],
 		// 	['Tower',2,6000,'=B2*C2'],
@@ -64,7 +72,7 @@ module.exports = new function(){
 		// 		}
 		// 	}
 		// });
-	}
+	},
 
 }
 

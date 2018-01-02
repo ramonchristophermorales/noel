@@ -23,9 +23,5 @@ require('./node_modules/jexcel/dist/js/jquery.csv.min.js');
 require('./node_modules/jexcel/dist/js/jquery.jcalendar.js');
 require('./node_modules/jexcel/dist/js/jquery.jexcel.js');
 
-// other helper functions
-// require('./js/helpers.js');
-
-
 // main script
 require('./js/main.js');

@@ -1,11 +1,4 @@
 
-// contains main configuration for this app
-const config = {
-	dbhost: 'localhost',
-	dbuser: 'root',
-	dbpassword: '',
-	dbname: 'noel'
-};
 
 const electron = require('electron')
 // Module to control application life.
@@ -79,21 +72,4 @@ app.on('activate', function () {
 // remove in prod
 require('electron-reload')(__dirname, {
   electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
-});
-
-
-// mysql connection for the application
-const mysql = require('mysql');
-const connection = mysql.createConnection({
-  host: config.dbhostname,
-  user: config.dbuser,
-  password: config.dbpassword,
-  database: config.dbname
-});
-connection.connect((err) => {
-  if (err) {
-	  console.log(err);
-		throw err;
- }
-  console.log('Connected!');
 });
