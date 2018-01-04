@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Noel App - About</title>
+		<link rel="stylesheet" type="text/css" href="./../node_modules/font-awesome/css/font-awesome.min.css" />
+		<link rel="stylesheet" type="text/css" href="./../node_modules/jexcel/dist/css/jquery.jcalendar.css" />
+		<link rel="stylesheet" type="text/css" href="./../node_modules/jexcel/dist/css/jquery.jexcel.css" />
+        <link rel="stylesheet" type="text/css" href="./../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="../css/app.css" />
+    </head>
+
+    <body id="app-layout">
+
+        <div id="app">
+
+            <div class="container" style="margin-top: 50px;">
+
+                <div class="alert alert-success" role="alert">
+                    Developer: <a href="#">Ramon Christopher Morales</a>
+                </div>
+                <div class="alert alert-info" role="alert">
+                    Version: <a href="#">1.0.0</a>
+                </div>
+                <div class="alert alert-danger" role="alert">
+                    Check me out on&nbsp;&nbsp;
+                    <div class="btn-group" role="group">
+                        <button href="https://www.facebook.com/ramonchristophermorales" class="btn btn-danger">    
+                            <i class="fa fa-facebook"></i>
+                        </button>
+                        <button href="https://www.linkedin.com/in/ramonchristophermorales" class="btn btn-danger">    
+                            <i class="fa fa-linkedin"></i>
+                        </button>
+                         <button href="https://github.com/ramonchristophermorales" class="btn btn-danger">    
+                            <i class="fa fa-github"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- #app -->
+    </body>
+
+    <script>
+        // You can also require other files to run in this process
+        require('./../renderer.js')
+
+        $('.btn').on('click', function() {
+            require('electron').shell.openExternal( $(this).attr('href'));
+        });
+    </script>
+
+</html>

@@ -5,7 +5,7 @@
 
 var helpers = require('./helpers.js');
 
-var orm = require('./orm.js');
+// var orm = require('./orm.js');
 
 
 module.exports = {
@@ -21,8 +21,8 @@ module.exports = {
 	colHeaders: [],
 
 	init: function() {
-		var eloquent = orm.init();
-		console.log(eloquent);
+		// var eloquent = orm.init();
+		// console.log(eloquent);
 
 		// used for search, result data and pagination
 		search = helpers.urlParam('search');

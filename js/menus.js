@@ -24,6 +24,12 @@ const template = [
       label: 'File',
       submenu: [
          {
+            label: 'Home',
+            click: function() {
+               window.location = '../index.html';
+            }
+         },
+         {
             role: 'quit'
          },
       ]
@@ -95,9 +101,15 @@ const template = [
       role: 'help',
       submenu: [
          {
-            label: 'Learn More',
+            label: 'Settings',
             click: function() {
-            	console.log('clicked learn more');
+            	window.location = 'html/settings.html';
+            }
+         },
+         {
+            label: 'About',
+            click: function() {
+               window.location = 'html/about.html';
             }
          }
       ]

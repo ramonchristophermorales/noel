@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Noel App - Settings</title>
+		<link rel="stylesheet" type="text/css" href="./../node_modules/font-awesome/css/font-awesome.min.css" />
+		<link rel="stylesheet" type="text/css" href="./../node_modules/jexcel/dist/css/jquery.jcalendar.css" />
+		<link rel="stylesheet" type="text/css" href="./../node_modules/jexcel/dist/css/jquery.jexcel.css" />
+        <link rel="stylesheet" type="text/css" href="./../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="../css/app.css" />
+    </head>
+
+    <body id="app-layout">
+
+        <div id="app">
+
+			<form action="/" method="post">
+				
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Column Name</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- @foreach ( $JExcelColumnAlias as $v ) -->
+							<tr class="jexcel-item">
+								<td>
+									<span class="text-container">test column</span>
+									<div class="tableControlsFormContainer"></div>
+								</td>
+								<td>
+									<button class="btn btn-success btn-edit" type="button" data-id="" data-alias="">Edit</button>
+
+									<a href="" class="btn btn-danger btn-delete" data-id="" data-alias="">Delete</a>
+
+									<button class="btn btn-success btn-update hide" type="submit">Update</button>
+
+									<button class="btn btn-danger btn-cancel hide" type="button">Cancel</button>
+
+								</td>
+							</tr>	
+						<!-- @endforeach -->
+						<tr id="jexcel-form-add-row" class="hide">
+							<td>
+								<div class="tableControlsFormContainer"></div>
+							</td>
+							<td>
+								<button class="btn btn-success btn-submit" type="submit">Submit</button>
+
+								<button class="btn btn-danger btn-cancel" type="button">Cancel</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+			</form>
+
+        </div><!-- #app -->
+    </body>
+
+    <script>
+        // You can also require other files to run in this process
+        require('./../renderer.js')
+    </script>
+
+</html>

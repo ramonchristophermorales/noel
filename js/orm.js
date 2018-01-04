@@ -1,67 +1,67 @@
 
-/**
- * orm.js
- */
+// /**
+//  * orm.js
+//  */
 
-let orm = require('orm');
+// let orm = require('orm');
 
-var config = require('./config.js');
+// var config = require('./config.js');
 
-module.exports = {
+// module.exports = {
 
-	instance: null,
+// 	instance: null,
 
-	connect: function() {
+// 	connect: function() {
 
-		var opts = {
-			host:     config.dbhost,
-			database: config.dbname,
-			protocol: config.dbprotocol,
-			port:     config.dbport,
-			query:    {pool: true}
-		};
+// 		var opts = {
+// 			host:     config.dbhost,
+// 			database: config.dbname,
+// 			protocol: config.dbprotocol,
+// 			port:     config.dbport,
+// 			query:    {pool: true}
+// 		};
 
-		return orm.connectAsync(opts)
-			.then(function(db) {
-				console.log('DB connected');
-			})
-			.catch(function() {
-				console.error('Connection error: ' + err);
-			})
-		;
-	},
+// 		return orm.connectAsync(opts)
+// 			.then(function(db) {
+// 				console.log('DB connected');
+// 			})
+// 			.catch(function() {
+// 				console.error('Connection error: ' + err);
+// 			})
+// 		;
+// 	},
 
-	init: function() {
-		return module.exports.connect();
-	},
-
-
-	table: function( tableName ) {
-
-		if ( typeof tableName === 'undefined' || tableName.trim() == '' ) {
-			console.error('Error: undefined table name');
-			return false;
-		}
-
-			return tableName;
-	},
+// 	init: function() {
+// 		return module.exports.connect();
+// 	},
 
 
-	find: function( id ) {
+// 	table: function( tableName ) {
 
-		if ( typeof id === 'undefined' || id.trim() == '' ) {
-			console.error('Error: undefined id');
-			return false;
-		}
+// 		if ( typeof tableName === 'undefined' || tableName.trim() == '' ) {
+// 			console.error('Error: undefined table name');
+// 			return false;
+// 		}
+
+// 			return tableName;
+// 	},
 
 
-	}
+// 	find: function( id ) {
 
-	findBy: function( columnName, value ) {
+// 		if ( typeof id === 'undefined' || id.trim() == '' ) {
+// 			console.error('Error: undefined id');
+// 			return false;
+// 		}
 
-		if ( typeof id === 'undefined' || id.trim() == '' ) {
-			console.error('Error: undefined id');
-		}
-	}
 
-} // moduel.exports
+// 	}
+
+// 	findBy: function( columnName, value ) {
+
+// 		if ( typeof id === 'undefined' || id.trim() == '' ) {
+// 			console.error('Error: undefined id');
+// 		}
+// 	}
+
+// } // moduel.exports
