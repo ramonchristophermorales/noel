@@ -21,7 +21,7 @@ function createWindow() {
 
 const template = [
 	 {
-      label: 'File',
+      label: 'Navigation',
       submenu: [
          {
             label: 'Home',
@@ -29,83 +29,86 @@ const template = [
                window.location = '../index.html';
             }
          },
-         {
-            role: 'quit'
-         },
-      ]
-   },
-   {
-      label: 'Edit',
-      submenu: [
-         {
-            role: 'undo'
-         },
-         {
-            role: 'redo'
-         },
-         {
-            type: 'separator'
-         },
-         {
-            role: 'cut'
-         },
-         {
-            role: 'copy'
-         },
-         {
-            role: 'paste'
-         }
-      ]
-   },
-   {
-      label: 'View',
-      submenu: [
-         {
-            role: 'reload'
+        {
+            label: 'Settings',
+            click: function() {
+               window.location = 'html/settings.html';
+            }
          },
          {
             role: 'toggledevtools'
          },
          {
-            type: 'separator'
+            role: 'quit'
          },
-         {
-            role: 'resetzoom'
-         },
-         {
-            role: 'zoomin'
-         },
-         {
-            role: 'zoomout'
-         },
-         {
-            type: 'separator'
-         },
-         {
-            role: 'togglefullscreen'
-         }
       ]
    },
-   {
-      role: 'window',
-      submenu: [
-         {
-            role: 'minimize'
-         },
-         {
-            role: 'close'
-         }
-      ]
-   },
+   // {
+   //    label: 'Edit',
+   //    submenu: [
+   //       {
+   //          role: 'undo'
+   //       },
+   //       {
+   //          role: 'redo'
+   //       },
+   //       {
+   //          type: 'separator'
+   //       },
+   //       {
+   //          role: 'cut'
+   //       },
+   //       {
+   //          role: 'copy'
+   //       },
+   //       {
+   //          role: 'paste'
+   //       }
+   //    ]
+   // },
+   // {
+   //    label: 'View',
+   //    submenu: [
+   //       {
+   //          role: 'reload'
+   //       },
+   //       {
+   //          role: 'toggledevtools'
+   //       },
+   //       {
+   //          type: 'separator'
+   //       },
+   //       {
+   //          role: 'resetzoom'
+   //       },
+   //       {
+   //          role: 'zoomin'
+   //       },
+   //       {
+   //          role: 'zoomout'
+   //       },
+   //       {
+   //          type: 'separator'
+   //       },
+   //       {
+   //          role: 'togglefullscreen'
+   //       }
+   //    ]
+   // },
+   // {
+   //    role: 'window',
+   //    submenu: [
+   //       {
+   //          role: 'minimize'
+   //       },
+   //       {
+   //          role: 'close'
+   //       }
+   //    ]
+   // },
    {
       role: 'help',
       submenu: [
-         {
-            label: 'Settings',
-            click: function() {
-            	window.location = 'html/settings.html';
-            }
-         },
          {
             label: 'About',
             click: function() {

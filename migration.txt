@@ -1,0 +1,10 @@
+
+CREATE TABLE MyGuests (
+	id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(255) NOT NULL,
+	alias VARCHAR(255) NOT NULL,
+	position INTEGER(7),
+	status TINYINT(1),
+	created_at DATETIME,
+	updated_at DATETIME
+)

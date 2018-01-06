@@ -18,15 +18,17 @@ const {Tray, Menu} = require('electron').remote;
 
 const trayMenuTemplate = [
     {
-       label: 'Empty Application',
-       enabled: false
+        label: 'Settings',
+        click: function() {
+           window.location = 'html/settings.html';
+        }
     },
     {
-       label: 'Settings',
-       click: function () {
-          console.log("Clicked on settings");
-       }
-    },
+        label: 'About',
+        click: function() {
+           window.location = 'html/about.html';
+        }
+     },
     {
        label: 'Help',
        click: function () {

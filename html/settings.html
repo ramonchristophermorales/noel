@@ -7,15 +7,24 @@
 		<link rel="stylesheet" type="text/css" href="./../node_modules/jexcel/dist/css/jquery.jcalendar.css" />
 		<link rel="stylesheet" type="text/css" href="./../node_modules/jexcel/dist/css/jquery.jexcel.css" />
         <link rel="stylesheet" type="text/css" href="./../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="../css/helpers.css" />
         <link rel="stylesheet" type="text/css" href="../css/app.css" />
     </head>
 
     <body id="app-layout">
 
-        <div id="app">
+        <div id="app-settings" class="pd-top-20">
+			
+			<div class="row mr-left-20 mr-bottom-20">
+				<div class="col-md-12">
+					<button class="btn btn-primary" id="btn-add-new">
+						<i class="fa fa-plus"></i>
+						Add New
+					</button>
+				</div>
+			</div>	
 
-			<form action="/" method="post">
-				
+			<div>
 				<table class="table table-striped">
 					<thead>
 						<tr>
@@ -25,9 +34,9 @@
 					</thead>
 					<tbody>
 						<!-- @foreach ( $JExcelColumnAlias as $v ) -->
-							<tr class="jexcel-item">
+							<!-- <tr class="jexcel-item">
 								<td>
-									<span class="text-container">test column</span>
+									<span class="text-container"></span>
 									<div class="tableControlsFormContainer"></div>
 								</td>
 								<td>
@@ -40,11 +49,11 @@
 									<button class="btn btn-danger btn-cancel hide" type="button">Cancel</button>
 
 								</td>
-							</tr>	
+							</tr>	 -->
 						<!-- @endforeach -->
 						<tr id="jexcel-form-add-row" class="hide">
 							<td>
-								<div class="tableControlsFormContainer"></div>
+								<div class="settingsFormContainer"></div>
 							</td>
 							<td>
 								<button class="btn btn-success btn-submit" type="submit">Submit</button>
@@ -55,7 +64,7 @@
 					</tbody>
 				</table>
 
-			</form>
+			</div>
 
         </div><!-- #app -->
     </body>

@@ -25,3 +25,5 @@ require('./node_modules/jexcel/dist/js/jquery.jexcel.js');
 
 // main script
 require('./js/main.js');
+
+require('./js/settings.js');

@@ -5,7 +5,7 @@
 
 var helpers = require('./helpers.js');
 
-// var orm = require('./orm.js');
+var tableColumns = require('./models/tableColumns.js');
 
 
 module.exports = {
@@ -21,8 +21,13 @@ module.exports = {
 	colHeaders: [],
 
 	init: function() {
-		// var eloquent = orm.init();
-		// console.log(eloquent);
+
+		console.log(tableColumns);
+		// tableColumns.get(0, function(err, data) {
+		// 	if (err) throw err;
+
+		// 	console.log(data);
+		// });
 
 		// used for search, result data and pagination
 		search = helpers.urlParam('search');
