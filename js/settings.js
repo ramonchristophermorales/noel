@@ -2,6 +2,8 @@
 /**
  * settings.js
  */
+
+var tableColumns = require('./models/tableColumns.js');
  
 module.exports = new function() {
 

@@ -7,15 +7,12 @@ let orm = require('orm');
 
 var config = require('./config.js');
 
+
 /**
  * @param  {Function} cb [errorMsg, dbInstance]
  * @return {[type]}      [description]
  */
 module.exports = function(cb){
-
-	if (connections[host] && connections[host][database]) {
-		return connections[host][database];
-	}
 
 	var opts = {
 		host:     config.dbhost,
@@ -26,13 +23,10 @@ module.exports = function(cb){
 	};
 
 	orm.connect(opts, function(err, db) {
-		
-		throw(err);
+		if( err )
+			cb(err);
 
-		connections[host] = connections[host] || {};
-		connections[host][database] = db;
-
-		return db;
+		cb(null, db);
 	});  
 
 } // moduel.exports

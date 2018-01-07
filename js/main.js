@@ -22,7 +22,7 @@ module.exports = {
 
 	init: function() {
 
-		console.log(tableColumns);
+		tableColumns.init();
 		// tableColumns.get(0, function(err, data) {
 		// 	if (err) throw err;
 
