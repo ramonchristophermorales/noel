@@ -7,7 +7,6 @@ var helpers = require('./helpers.js');
 
 var tableColumns = require('./models/tableColumns.js');
 
-
 module.exports = {
 
 	data: null,
@@ -22,7 +21,7 @@ module.exports = {
 
 	init: function() {
 
-		tableColumns.init();
+
 		// tableColumns.get(0, function(err, data) {
 		// 	if (err) throw err;
 
@@ -38,7 +37,7 @@ module.exports = {
 	},
 
 	ready: function() {
-
+		tableColumns.init();
 		// console.log(search);
 	},
 

@@ -7,6 +7,29 @@ let orm = require('orm');
 
 var config = require('./config.js');
 
+function setup(db) {
+
+	var TableColumns = db.define('tableColumns', {
+		id:      {type: 'serial', key: true}, // the auto-incrementing primary key
+		name:    {type: 'text'},
+		alias: {type: 'text'},
+		position:     {type: 'number'},
+		status: {type:'boolean'},
+		created_at: {type: 'date'},
+		updated_at: {type: 'date'}
+	}, {
+		methods : {
+			
+		},
+		validations: {
+		}
+	});
+	TableColumns.sync();
+
+	// other models
+
+} // setup()
+
 
 /**
  * @param  {Function} cb [errorMsg, dbInstance]
@@ -26,6 +49,7 @@ module.exports = function(cb){
 		if( err )
 			cb(err);
 
+		setup(db);
 		cb(null, db);
 	});  
 
