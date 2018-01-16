@@ -23,6 +23,9 @@ require('./node_modules/jexcel/dist/js/jquery.csv.min.js');
 require('./node_modules/jexcel/dist/js/jquery.jcalendar.js');
 require('./node_modules/jexcel/dist/js/jquery.jexcel.js');
 
+// sweetalert
+require('./node_modules/sweetalert/dist/sweetalert.min.js');
+
 // main script
 require('./js/main.js');
 

@@ -30,6 +30,7 @@
     "jquery": "^3.2.1",
     "mysql": "^2.15.0",
     "orm": "^4.0.2",
+    "sweetalert": "^2.1.0",
     "underscore": "^1.8.3"
   }
 }

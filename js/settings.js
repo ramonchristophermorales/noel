@@ -3,11 +3,16 @@
  * settings.js
  */
 
+var database = require('./db.js');
 var tableColumns = require('./models/tableColumns.js');
+var helpers = require('./helpers');
  
 module.exports = new function() {
 
+	var tableColumnsData = null;
+
 	this.init = function() {
+
 
 		this.settings = $('#app-settings');
 		this.settings.btn_add = this.settings.find('#btn-add-new');
@@ -17,7 +22,7 @@ module.exports = new function() {
 		this.settings.table = this.settings.find('.table');
 
 		this.settings.form_add_row = $('tr#jexcel-form-add-row');
-		this.settings.form_add_row.btn_cancel = this.settings.form_add_row.find('.btn-submit');
+		this.settings.form_add_row.btn_submit = this.settings.form_add_row.find('.btn-submit');
 		this.settings.form_add_row.btn_cancel = this.settings.form_add_row.find('.btn-cancel');
 
 		this.settings.formTemplate = '<div>' +	
@@ -25,41 +30,101 @@ module.exports = new function() {
 			'<input type="text" name="alias" class="form-control" value="">' +
 		'<div>';
 
+		this.settings.formActionTemplate = '' +
+			'<button class="btn btn-success btn-edit" type="button" data-id="" data-alias="">Edit</button>&nbsp;' +
+			'<button class="btn btn-danger btn-delete" data-id="" data-alias="">Delete</button>&nbsp;' +
+			'<button class="btn btn-success btn-update hide" type="submit">Update</button>&nbsp;' +
+			'<button class="btn btn-danger btn-cancel hide" type="button">Cancel</button>'
+		;
 		this.ready();
 	}; // init()
 
 	this.ready = function() {
 
-		var that = this;	
+		var _this = this;	
 
-		// this.showTable();
+		this.showTable();
+
+		this.settings.form_add_row.btn_submit.on('click', function(e) {
+			_this.addNewColumn();
+		});
 
 		this.settings.form_add_row.btn_cancel.on('click', function(e) {
 			e.preventDefault();
-			that.cancelFormAddRow();
+			_this.cancelFormAddRow();
 		});
 
 		this.settings.btn_add.on('click', function(e) {
 			e.preventDefault();
-			that.showFormAddRow();
-		});
-
-		this.settings.btn_edit.on('click', function(e) {
-			e.preventDefault();
-			that.showFormEditRow( $(this) );
+			_this.showFormAddRow();
 		});
 
 		this.settings.btn_cancel.on('click', function(e) {
 			e.preventDefault();
-			that.cancelFormEditRow( $(this) );
+			_this.cancelFormEditRow( $(this) );
 		});
 
 		this.settings.btn_delete.on('click', function(e) {
 			e.preventDefault();
-			that.deleteFromRow($(this));
-		})
+			_this.deleteFromRow($(this));
+		});
 
 	}; // ready()
+
+	this.showTable = function() {
+
+		var _this = this;
+
+		database( function(err, db) {
+		  	if (err) throw err;
+
+			var tableColumnsModel = db.models.tableColumns;
+
+			tableColumnsModel.find( {}, {order: 'position' }, function(err, res) {
+
+				if (err) {
+		  			swal('error', err.msg, 'Error');
+		  			return false;
+	  			}
+
+	  			_this.tableColumnsData = res;
+
+	  			var html = '';
+	  			$.each(res, function(i,v) {
+
+	  				var template = _this.settings.formActionTemplate.replace('data-id=""', 'data-id="'+ v.id +'"');
+
+	  				html += '' +
+	  					'<tr class="jexcel-item" data-id="'+ v.id +'" data-position="'+ v.position +'" data-alias="'+ v.alias +'">' +
+	  						'<td>' + v.position + '</td>' +
+	  						'<td>' + v.alias + '</td>' +
+	  						'<td>' + template + '</td>' +
+  						'</tr>'
+	  				;
+	  			});
+
+	  			// _this.settings.table.find('tbody').find('tr:not(.jexcel-form-add-row').remove();
+
+	  			_this.settings.table.find('tbody')
+	  				.prepend( html )
+	  				.on('click', '.btn', function() {
+	  					_this.executeFormAction(this);
+	  				})
+  				;
+			});
+		}); // database()
+
+	}; // showTable()
+
+	this.executeFormAction = function(btn_obj) {
+
+		var btn = $(btn_obj);
+
+		if ( btn.hasClass('btn-edit') ) {
+			this.showFormEditRow(btn);
+		}
+
+	}; // executeFormAction()
 
 	/**
 	 * show the modal delete, then redirect to delete url
@@ -69,7 +134,7 @@ module.exports = new function() {
 		if ( typeof btn_delete !== 'object')
 			return false;
 
-		var that = this;
+		var _this = this;
 
 		var alias = btn_delete.attr('data-alias');
 
@@ -129,12 +194,6 @@ module.exports = new function() {
 			return false;
 
 		var btn_edit_parent = btn_edit.parents('.jexcel-item');
-		var formTemplate = $(this.settings.formTemplate);
-
-		formTemplate.find('[name="id"]').val( btn_edit.attr('data-id') );
-		formTemplate.find('[name="alias"]').attr('value', btn_edit.attr('data-alias') );
-
-		btn_edit_parent.find('.settingsFormContainer').html(formTemplate.html());
 
 		btn_edit_parent.find('.text-container').addClass('hide');
 		btn_edit_parent.find('.btn-edit').addClass('hide');
@@ -175,32 +234,17 @@ module.exports = new function() {
 	}; // showNewColumnForm()
 
 	/**
-	 * send add new request, adding new column for the jexcel or main table through ajax
+	 * dding new column for the jexcel or main table through ajax
 	 * @param  {object} obj - button initiator
 	 */
-	this.sendAddNewColumn = function(obj) {
+	this.addNewColumn = function(obj) {
 
 		var data = {
-			columnName: $('#formAddRow').find('input').val()
+			alias: this.settings.form_add_row.find('input[name="alias"]').val()
 		};
 
-		$.ajax({
-	        data: data, 
-	        url: settings.url.store, 
-	        cache: false, 
-	        type: 'POST', 
-	        dataType: 'json',
-	        error: function (jqXHR, textStatus, errorThrown) {},
-	        success: function (res) {
+		tableColumns.create(data);
 
-	        	if (res.status == 0) {
-	        		swal('Adding new Column failed.', res.message, 'error');
-	        		return false;
-	        	}
-
-	        	swal('Success', res.message, 'success' );
-	        }
-	    });
 	}; // sendAddNewColumn()
 
 	this.init();
