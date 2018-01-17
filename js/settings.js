@@ -45,6 +45,20 @@ module.exports = new function() {
 
 		this.showTable();
 
+		this.settings.table.find('tbody')
+			.sortable({
+				axis: "y",
+				revert: true,
+				scroll: false,
+				cursor: "move"
+			})
+			.droppable({
+				drop: function( e, ui ) {
+					_this.updatePositions();
+				}
+			})
+		;
+
 		this.settings.form_add_row.btn_submit.on('click', function(e) {
 			_this.addNewColumn();
 		});
@@ -71,6 +85,14 @@ module.exports = new function() {
 
 	}; // ready()
 
+	/**
+	 * @todo: work here
+	 * @return {[type]} [description]
+	 */
+	this.updatePositions = function() {
+		console.log('here');
+	}; // updatePositions()
+
 	this.showTable = function() {
 
 		var _this = this;
@@ -96,8 +118,8 @@ module.exports = new function() {
 
 	  				html += '' +
 	  					'<tr class="jexcel-item" data-id="'+ v.id +'" data-position="'+ v.position +'" data-alias="'+ v.alias +'">' +
-	  						'<td>' + v.position + '</td>' +
-	  						'<td>' + v.alias + '</td>' +
+	  						'<td class="position">' + v.position + '</td>' +
+	  						'<td class="alias">' + v.alias + '</td>' +
 	  						'<td>' + template + '</td>' +
   						'</tr>'
 	  				;
@@ -195,13 +217,17 @@ module.exports = new function() {
 
 		var btn_edit_parent = btn_edit.parents('.jexcel-item');
 
-		btn_edit_parent.find('.text-container').addClass('hide');
+		var alias = btn_edit_parent.attr('data-alias');
+
+		btn_edit_parent.find('.alias').html('<input type="text" class="form-control" value="' + alias +'">');
+
 		btn_edit_parent.find('.btn-edit').addClass('hide');
 		btn_edit_parent.find('.btn-delete').addClass('hide');
 		btn_edit_parent.find('.btn-update').removeClass('hide');
 		btn_edit_parent.find('.btn-cancel').removeClass('hide');
 
 		this.settings.btn_add.attr('disabled', true);
+		this.settings.find(':not(.btn-update)').attr('disabled');
 
 	}; // showFormEditRow()
 
