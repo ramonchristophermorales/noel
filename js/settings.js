@@ -1,6 +1,7 @@
 
 /**
  * settings.js
+ * https://angularfirebase.com/lessons/desktop-apps-with-electron-and-angular/
  */
 
 var database = require('./db.js');

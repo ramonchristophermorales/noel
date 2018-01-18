@@ -5,7 +5,7 @@
 
 let orm = require('orm');
 
-var config = require('./config.js');
+let config = require('./config.js');
 
 function setup(db) {
 
@@ -52,7 +52,9 @@ function setup(db) {
 			}
 		}
 	});
-	TableColumns.sync();
+	// TableColumns.sync();
+
+	db.syncPromise();
 
 	// other models
 
