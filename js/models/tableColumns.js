@@ -19,6 +19,12 @@ module.exports = {
 		
 	},
 
+	/**
+	 * create data
+	 * 
+	 * @param  {object} data 
+	 * @return {boolean}
+	 */
 	create: function(data) {
 
 		var _this = this;
@@ -66,7 +72,6 @@ module.exports = {
 			  				return false;
 			  			}
 
-			  			console.log(rows);
 				  	}); // tableColumnsModel.create()
 
 				}); // tableColumnsModel.count()
@@ -77,6 +82,32 @@ module.exports = {
 
 		}); // database()
 
-	} // create()
+	}, // create()
+
+	/**
+	 * delete data
+	 * 
+	 * @param  {object} data 
+	 * @return {boolean}
+	 */
+	delete: function(id) {
+
+		if ( typeof id === 'undefined' )
+			return false;
+
+		database( function(err, db) {
+		  	if (err) throw err;
+
+			var tableColumnsModel = db.models.tableColumns;
+
+			tableColumnsModel.one( {id: id}, function(err, res) {
+				if (err) throw err;
+				
+				res.remove();
+			});
+
+		}); // database()
+
+	}, // delete()
 
 }; // module.exports()

@@ -28,7 +28,7 @@ module.exports = new function() {
 
 		this.settings.formTemplate = '<div>' +	
 			'<input type="hidden" name="id" value="">' +
-			'<input type="text" name="alias" class="form-control" value="">' +
+			'<input type="text" name="alias" class="form-control" value="" placeholder="Type new column name">' +
 		'<div>';
 
 		this.settings.formActionTemplate = '' +
@@ -46,19 +46,6 @@ module.exports = new function() {
 
 		this.showTable();
 
-		this.settings.table.find('tbody')
-			.sortable({
-				axis: "y",
-				revert: true,
-				scroll: false,
-				cursor: "move"
-			})
-			.droppable({
-				drop: function( e, ui ) {
-					_this.updatePositions();
-				}
-			})
-		;
 
 		this.settings.form_add_row.btn_submit.on('click', function(e) {
 			_this.addNewColumn();
@@ -70,7 +57,6 @@ module.exports = new function() {
 		});
 
 		this.settings.btn_add.on('click', function(e) {
-			e.preventDefault();
 			_this.showFormAddRow();
 		});
 
@@ -79,20 +65,7 @@ module.exports = new function() {
 			_this.cancelFormEditRow( $(this) );
 		});
 
-		this.settings.btn_delete.on('click', function(e) {
-			e.preventDefault();
-			_this.deleteFromRow($(this));
-		});
-
 	}; // ready()
-
-	/**
-	 * @todo: work here
-	 * @return {[type]} [description]
-	 */
-	this.updatePositions = function() {
-		console.log('here');
-	}; // updatePositions()
 
 	this.showTable = function() {
 
@@ -103,7 +76,7 @@ module.exports = new function() {
 
 			var tableColumnsModel = db.models.tableColumns;
 
-			tableColumnsModel.find( {}, {order: 'position' }, function(err, res) {
+			tableColumnsModel.find( {}, {order: 'id' }, function(err, res) {
 
 				if (err) {
 		  			swal('error', err.msg, 'Error');
@@ -118,8 +91,7 @@ module.exports = new function() {
 	  				var template = _this.settings.formActionTemplate.replace('data-id=""', 'data-id="'+ v.id +'"');
 
 	  				html += '' +
-	  					'<tr class="jexcel-item" data-id="'+ v.id +'" data-position="'+ v.position +'" data-alias="'+ v.alias +'">' +
-	  						'<td class="position">' + v.position + '</td>' +
+	  					'<tr class="jexcel-item" data-id="'+ v.id +'" data-alias="'+ v.alias +'">' +
 	  						'<td class="alias">' + v.alias + '</td>' +
 	  						'<td>' + template + '</td>' +
   						'</tr>'
@@ -147,6 +119,10 @@ module.exports = new function() {
 			this.showFormEditRow(btn);
 		}
 
+		if ( btn.hasClass('btn-delete') ) {
+			this.deleteFromRow(btn);
+		}
+
 	}; // executeFormAction()
 
 	/**
@@ -159,16 +135,23 @@ module.exports = new function() {
 
 		var _this = this;
 
-		var alias = btn_delete.attr('data-alias');
+		var parent = btn_delete.parents('.jexcel-item')
+
+		var alias = parent.attr('data-alias');
+
+		var id = parent.attr('data-id');
 
 		swal({
-			title: 'Delete',
+			title: "Are you sure?",
 			text: 'Delete "'+ alias +'" column?',
-			type: 'warning',
-			showCancelButton: true,
-			confirmButtonText: 'Yes, delete it!'
-		}, function(result) {
-			window.location = btn_delete.attr('href');
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		})
+		.then((r) => {
+			if (r) {
+				tableColumns.delete(id);
+			} 
 		});
 
 	}; // deleteFromRow()
