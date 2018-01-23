@@ -52,7 +52,6 @@ module.exports = new function() {
 		});
 
 		this.settings.form_add_row.btn_cancel.on('click', function(e) {
-			e.preventDefault();
 			_this.cancelFormAddRow();
 		});
 
@@ -60,10 +59,9 @@ module.exports = new function() {
 			_this.showFormAddRow();
 		});
 
-		this.settings.btn_cancel.on('click', function(e) {
-			e.preventDefault();
-			_this.cancelFormEditRow( $(this) );
-		});
+		// this.settings.find('.btn-cancel').on('click', function(e) {
+		// 	_this.cancelFormEditRow( $(this) );
+		// });
 
 	}; // ready()
 
@@ -123,7 +121,27 @@ module.exports = new function() {
 			this.deleteFromRow(btn);
 		}
 
+		if ( btn.hasClass('btn-cancel') ) {
+			this.cancelFormEditRow(btn);
+		}
+
+		if ( btn.hasClass('btn-update') ) {
+			this.updateFormEditRow(btn);
+		}
+
 	}; // executeFormAction()
+
+	/**
+	 * update the form edit row
+	 * @todo : here
+	 * @param  {object} btn_update 
+	 */
+	this.updateFormEditRow = function(btn_update) {
+
+		if ( typeof btn_update !== 'object')
+			return false;
+
+	}; // updateFormEditRow()
 
 	/**
 	 * show the modal delete, then redirect to delete url
@@ -168,24 +186,20 @@ module.exports = new function() {
 
 		var btn_cancel_parent = btn_cancel.parents('.jexcel-item');
 
-		btn_cancel_parent
-			.find('[name="id"]')
-			.val( null )
-		;
+		var alias = btn_cancel_parent.attr('data-alias');
 
-		btn_cancel_parent
-			.find('[name="alias"]')
-			.val( null )
-			.addClass('hide')
-		;
+		btn_cancel_parent.find('.alias').html(alias);
 
-		btn_cancel_parent.find('.text-container').removeClass('hide');
 		btn_cancel_parent.find('.btn-edit').removeClass('hide');
 		btn_cancel_parent.find('.btn-delete').removeClass('hide');
 		btn_cancel_parent.find('.btn-update').addClass('hide');
 		btn_cancel_parent.find('.btn-cancel').addClass('hide');
 
-		this.settings.btn_add.attr('disabled', false);
+		this.settings.find('.btn-edit').attr('disabled', false);
+		this.settings.find('.btn-delete').attr('disabled', false);
+
+		this.settings.find('.btn-add').attr('disabled', false);
+		this.settings.find(':not(.btn-update)').attr('disabled', false);
 
 	}; // cancelFormEditRow()
 
@@ -210,8 +224,11 @@ module.exports = new function() {
 		btn_edit_parent.find('.btn-update').removeClass('hide');
 		btn_edit_parent.find('.btn-cancel').removeClass('hide');
 
-		this.settings.btn_add.attr('disabled', true);
-		this.settings.find(':not(.btn-update)').attr('disabled');
+		this.settings.find('.btn-edit').attr('disabled', true);
+		this.settings.find('.btn-delete').attr('disabled', true);
+
+		this.settings.find('.btn-add').attr('disabled', true);
+		// this.settings.find(':not(.btn-update)').attr('disabled', true);
 
 	}; // showFormEditRow()
 
@@ -222,10 +239,10 @@ module.exports = new function() {
 
 		this.settings.form_add_row.addClass('hide');
 
-		this.settings.btn_edit.attr('disabled', false);
-		this.settings.btn_delete.attr('disabled', false);
+		this.settings.find('.btn-edit').attr('disabled', false);
+		this.settings.find('.btn-delete').attr('disabled', false);
 
-	}; // cancelFromAddRow()
+	}; // cancelFormAddRow()
 
 	/**
 	 * show the form, new row contains input box and some buttons
@@ -234,8 +251,8 @@ module.exports = new function() {
 
 		this.settings.form_add_row.removeClass('hide');
 
-		this.settings.btn_edit.attr('disabled', true);
-		this.settings.btn_delete.attr('disabled', true);
+		this.settings.find('.btn-edit').attr('disabled', true);
+		this.settings.find('.btn-delete').attr('disabled', true);
 
 		var formTemplate = $(this.settings.formTemplate);
 
@@ -244,7 +261,7 @@ module.exports = new function() {
 	}; // showNewColumnForm()
 
 	/**
-	 * dding new column for the jexcel or main table through ajax
+	 * adding new column for the jexcel or main table through ajax
 	 * @param  {object} obj - button initiator
 	 */
 	this.addNewColumn = function(obj) {
@@ -254,6 +271,8 @@ module.exports = new function() {
 		};
 
 		tableColumns.create(data);
+
+		location.reload();
 
 	}; // sendAddNewColumn()
 

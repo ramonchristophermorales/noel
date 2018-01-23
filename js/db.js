@@ -59,10 +59,6 @@ function setup(db) {
 
 } // setup()
 
-function test(next) {
-	alert('find this');
-	console.log(next);
-}
 /**
  * @param  {Function} cb [errorMsg, dbInstance]
  * @return {[type]}      [description]
@@ -72,6 +68,8 @@ module.exports = function(cb){
 	var opts = {
 		host:     config.dbhost,
 		database: config.dbname,
+		user: config.dbuser,
+		password: config.dbpass,
 		protocol: config.dbprotocol,
 		port:     config.dbport,
 		query:    {pool: true}
