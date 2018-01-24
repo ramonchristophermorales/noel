@@ -3,9 +3,9 @@
  * main.js
  */
 
-var helpers = require('./helpers.js');
+var database = require('./db.js');
 
-var tableColumns = require('./models/tableColumns.js');
+var helpers = require('./helpers.js');
 
 module.exports = {
 
@@ -22,11 +22,6 @@ module.exports = {
 	init: function() {
 
 
-		// tableColumns.get(0, function(err, data) {
-		// 	if (err) throw err;
-
-		// 	console.log(data);
-		// });
 
 		// used for search, result data and pagination
 		search = helpers.urlParam('search');
@@ -37,8 +32,36 @@ module.exports = {
 	},
 
 	ready: function() {
-		tableColumns.init();
+		var _this = this;
 		// console.log(search);
+		$(document).ready(function() {
+			setTimeout( function() { 
+				// _this.test(); 
+			}, 1000);
+		});
+	},
+
+	test: function() {
+		database( function(err, db) {
+		  	if (err) {
+	  			swal('Error', err.msg, 'warning');
+	  			return false;
+  			}
+
+  			var JExcel = db.models.jExcel;
+
+			JExcel.find( {}, {order: 'id' }, function(err, res) {
+
+					if (err) {
+			  			swal('Error', err.msg, 'warning');
+			  			return false;
+		  			}
+
+		  			console.log(res);
+			});
+
+		});
+
 	},
 
 	getData: function() {

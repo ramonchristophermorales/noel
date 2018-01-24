@@ -5,7 +5,7 @@
  */
 
 var database = require('./db.js');
-var tableColumns = require('./models/tableColumns.js');
+
 var helpers = require('./helpers');
  
 module.exports = new function() {
@@ -70,14 +70,17 @@ module.exports = new function() {
 		var _this = this;
 
 		database( function(err, db) {
-		  	if (err) throw err;
+		  	if (err) {
+	  			swal('Error', err.msg, 'warning');
+	  			return false;
+  			}
 
 			var tableColumnsModel = db.models.tableColumns;
 
 			tableColumnsModel.find( {}, {order: 'id' }, function(err, res) {
 
 				if (err) {
-		  			swal('error', err.msg, 'Error');
+		  			swal('Error', err.msg, 'warning');
 		  			return false;
 	  			}
 
@@ -96,7 +99,7 @@ module.exports = new function() {
 	  				;
 	  			});
 
-	  			// _this.settings.table.find('tbody').find('tr:not(.jexcel-form-add-row').remove();
+	  			_this.settings.table.find('tbody').find('tr:not(#jexcel-form-add-row)').remove();
 
 	  			_this.settings.table.find('tbody')
 	  				.prepend( html )
@@ -133,13 +136,51 @@ module.exports = new function() {
 
 	/**
 	 * update the form edit row
-	 * @todo : here
+	 * 
 	 * @param  {object} btn_update 
 	 */
 	this.updateFormEditRow = function(btn_update) {
 
+		var _this = this;
+
 		if ( typeof btn_update !== 'object')
 			return false;
+
+		var parent = btn_update.parents('tr.jexcel-item');
+
+		var id = parent.attr('data-id');
+
+		var alias = parent.find('input').val();
+
+		database( function(err, db) {
+		  	if (err) {
+	  			swal('Error', err.msg, 'warning');
+	  			return false;
+  			}
+
+			var tableColumnsModel = db.models.tableColumns;
+
+			tableColumnsModel.one( {id: id}, function(err, res) {
+				if (err) {
+		  			swal('Error', err.msg, 'warning');
+		  			return false;
+	  			}
+
+	  			res.alias = alias;
+	  			res.name = alias.replace(' ', '');
+	  			res.updated_at =  helpers.epochDateTime();
+
+	  			res.save(function(err) {
+	  				if (err) {
+			  			swal('Error', err.msg, 'warning');
+			  			return false;
+		  			}
+
+		  			_this.showTable();
+	  			});
+			}); // tableColumnsModel
+
+		}); // database()
 
 	}; // updateFormEditRow()
 
@@ -168,7 +209,30 @@ module.exports = new function() {
 		})
 		.then((r) => {
 			if (r) {
-				tableColumns.delete(id);
+				
+				if ( typeof id === 'undefined' )
+					return false;
+
+				database( function(err, db) {
+				  	if (err) {
+			  			swal('Error', err.msg, 'warning');
+			  			return false;
+		  			}
+
+					var tableColumnsModel = db.models.tableColumns;
+
+					tableColumnsModel.one( {id: id}, function(err, res) {
+						if (err) {
+				  			swal('Error', err.msg, 'warning');
+				  			return false;
+			  			}
+						
+						res.remove();
+
+						_this.showTable();
+					});
+
+				}); // database()
 			} 
 		});
 
@@ -266,15 +330,76 @@ module.exports = new function() {
 	 */
 	this.addNewColumn = function(obj) {
 
+		var _this = this;
+
 		var data = {
 			alias: this.settings.form_add_row.find('input[name="alias"]').val()
 		};
 
-		tableColumns.create(data);
+		if ( typeof data.alias === 'undefined' ) {
+			swal('Error', 'Unable to save new column', 'warning');
+			return false;
+		}
 
-		location.reload();
+		database( function(err, db) {
+		  	if (err) {
+	  			swal('Error', err.msg, 'warning');
+	  			return false;
+  			}
+
+			data.name = data.alias.replace(' ', '');
+
+			var tableColumnsModel = db.models.tableColumns
+
+			tableColumnsModel.find({ alias: data.alias }, function(err, res) {
+				if (err) {
+		  			swal('Error', err.msg, 'warning');
+		  			return false;
+	  			}
+
+	  			if ( res.length != 0 ) {
+	  				swal('Invalid', 'Column name should be unique', 'warning');
+	  				return false;
+	  			} 
+
+	  			tableColumnsModel.count(null, function(err, count) {
+					if (err) {
+			  			swal('Invalid', err.msg, 'warning');
+			  			return false;
+		  			}
+
+					var createData = {
+						name: data.name,
+						alias: data.alias,
+						position: count + 1, // increment the position
+						status: data.status ? 1 : 0,
+						created_at: helpers.epochDateTime(),
+						updated_at: helpers.epochDateTime()
+					};
+
+				  	tableColumnsModel.create( createData, function(err, rows) {
+			  			if (err) {
+			  				swal('Error', err.msg, 'warning');
+			  				return false;
+			  			}
+
+			  			// refresh the table
+			  			_this.showTable();
+
+			  			_this.settings.form_add_row.find('input').val(null);
+			  			_this.settings.form_add_row.addClass('hide');
+				  	}); // tableColumnsModel.create()
+
+				}); // tableColumnsModel.count()
+
+			}); // tableColumnsModel.find(()
+
+			return true;
+
+		}); // database()
 
 	}; // sendAddNewColumn()
+
 
 	this.init();
 

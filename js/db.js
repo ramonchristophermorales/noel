@@ -14,8 +14,8 @@ function setup(db) {
 		name:    {type: 'text'},
 		alias: {type: 'text'},
 		status: {type:'boolean'},
-		created_at: {type: 'date'},
-		updated_at: {type: 'date'}
+		created_at: {type: 'date', time: true},
+		updated_at: {type: 'date', time: true}
 	}, {
 		hooks : {
 
@@ -28,7 +28,7 @@ function setup(db) {
 			alias: [
 				orm.enforce.required(['Alias is required']),
 				orm.enforce.ranges.length(1, 255, "Invalid Alias"),
-				orm.enforce.patterns.match(/^[a-z0-9/s]+$/ig, "Alias should only contain blank spaces and alphanumeric characters")
+				orm.enforce.patterns.match(/^[a-z0-9 ]+$/i, "Alias should only contain blank spaces and alphanumeric characters")
 			],
 			position: [
 				orm.enforce.ranges.number(1, undefined, "Invalid Position")
@@ -36,27 +36,32 @@ function setup(db) {
 			status: [
 				orm.enforce.ranges.number(0, 1, "Invalid Status")
 			],
-			crated_at: [
-				orm.enforce.patterns.match("/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/", "Invalid Created At")
+			created_at: [
+				// orm.enforce.patterns.match("/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/", "Invalid Created At")
 			],
 			updated_at: [
-				orm.enforce.patterns.match("/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/", "Invalid Updated At")
+				// orm.enforce.patterns.match("/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/", "Invalid Updated At")
 			],
 		},
 		methods: {
-			countAll: function() {
-				tableColumnsModel.count(null, function(err, rows) {
-					return rows;
-				});
-			}
+
 		}
 	});
 	// TableColumns.sync();
 
+
+
+	var JExcel = db.define('jExcel', {
+		id:      {type: 'serial', key: true}, // the auto-incrementing primary key
+		tableColumns_id:    {type: 'integer'},
+		value: {type: 'text', size: 1000 }
+	}, {	
+
+	});	// JExcel
+
+	//
+
 	db.syncPromise();
-
-	// other models
-
 } // setup()
 
 /**
