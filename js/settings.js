@@ -4,6 +4,8 @@
  * https://angularfirebase.com/lessons/desktop-apps-with-electron-and-angular/
  */
 
+let config = require('./config.js');
+
 var database = require('./db.js');
 
 var helpers = require('./helpers');
@@ -71,7 +73,7 @@ module.exports = new function() {
 
 		database( function(err, db) {
 		  	if (err) {
-	  			swal('Error', err.msg, 'warning');
+	  			swal('Error', typeof err.msg !== 'undefined' ? err.msg : 'Something went wrong.' , 'warning');
 	  			return false;
   			}
 
@@ -80,7 +82,7 @@ module.exports = new function() {
 			tableColumnsModel.find( {}, {order: 'id' }, function(err, res) {
 
 				if (err) {
-		  			swal('Error', err.msg, 'warning');
+		  			swal('Error', typeof err.msg !== 'undefined' ? err.msg : 'Something went wrong.' , 'warning');
 		  			return false;
 	  			}
 
@@ -154,7 +156,7 @@ module.exports = new function() {
 
 		database( function(err, db) {
 		  	if (err) {
-	  			swal('Error', err.msg, 'warning');
+	  			swal('Error', typeof err.msg !== 'undefined' ? err.msg : 'Something went wrong.' , 'warning');
 	  			return false;
   			}
 
@@ -162,9 +164,11 @@ module.exports = new function() {
 
 			tableColumnsModel.one( {id: id}, function(err, res) {
 				if (err) {
-		  			swal('Error', err.msg, 'warning');
+		  			swal('Error', typeof err.msg !== 'undefined' ? err.msg : 'Something went wrong.' , 'warning');
 		  			return false;
 	  			}
+
+	  			var oldName = res.name;
 
 	  			res.alias = alias;
 	  			res.name = alias.replace(' ', '');
@@ -172,9 +176,25 @@ module.exports = new function() {
 
 	  			res.save(function(err) {
 	  				if (err) {
-			  			swal('Error', err.msg, 'warning');
+			  			swal('Error', typeof err.msg !== 'undefined' ? err.msg : 'Something went wrong.' , 'warning');
 			  			return false;
 		  			}
+
+		  			// add the column to jexcel table
+		  			var sql = " ALTER TABLE `" + config.tableName + "` CHANGE `" + oldName + "` `" + res.name + "` TEXT(1000) NULL";
+
+		  			db.driver.execQuery( sql , function(err,res1) {
+
+						if (err) {
+				  			swal('Error', typeof err.msg !== 'undefined' ? err.msg : 'Something went wrong.' , 'warning');
+				  			res.alias = oldValue.alias;
+				  			res.name = oldValue.name;
+				  			res.updated_at =  oldValue.updated_at;
+				  			res.save(function(err) {
+				  				console.log(err);
+				  			});
+						}
+					});
 
 		  			_this.showTable();
 	  			});
@@ -215,7 +235,7 @@ module.exports = new function() {
 
 				database( function(err, db) {
 				  	if (err) {
-			  			swal('Error', err.msg, 'warning');
+			  			swal('Error', typeof err.msg !== 'undefined' ? err.msg : 'Something went wrong.' , 'warning');
 			  			return false;
 		  			}
 
@@ -223,7 +243,7 @@ module.exports = new function() {
 
 					tableColumnsModel.one( {id: id}, function(err, res) {
 						if (err) {
-				  			swal('Error', err.msg, 'warning');
+				  			swal('Error', typeof err.msg !== 'undefined' ? err.msg : 'Something went wrong.' , 'warning');
 				  			return false;
 			  			}
 						
@@ -343,7 +363,7 @@ module.exports = new function() {
 
 		database( function(err, db) {
 		  	if (err) {
-	  			swal('Error', err.msg, 'warning');
+	  			swal('Error', typeof err.msg !== 'undefined' ? err.msg : 'Something went wrong.' , 'warning');
 	  			return false;
   			}
 
@@ -353,7 +373,7 @@ module.exports = new function() {
 
 			tableColumnsModel.find({ alias: data.alias }, function(err, res) {
 				if (err) {
-		  			swal('Error', err.msg, 'warning');
+		  			swal('Error', typeof err.msg !== 'undefined' ? err.msg : 'Something went wrong.' , 'warning');
 		  			return false;
 	  			}
 
@@ -377,11 +397,22 @@ module.exports = new function() {
 						updated_at: helpers.epochDateTime()
 					};
 
-				  	tableColumnsModel.create( createData, function(err, rows) {
+				  	tableColumnsModel.create( createData, function(err, row) {
 			  			if (err) {
-			  				swal('Error', err.msg, 'warning');
+			  				swal('Error', typeof err.msg !== 'undefined' ? err.msg : 'Something went wrong.' , 'warning');
 			  				return false;
 			  			}
+
+			  			// add the column to jexcel table
+			  			var sql = " ALTER TABLE `" + config.tableName + "` ADD `" + createData.name + "` TEXT(1000) NULL ";
+			  			db.driver.execQuery( sql , function(err,res) {
+							if (err) {
+					  			swal('Error', typeof err.msg !== 'undefined' ? err.msg : 'Something went wrong.' , 'warning');
+					  			tableColumnsModel.one(row.id, function(err, row) {
+					  				row.remove();
+					  			});
+							}
+						});
 
 			  			// refresh the table
 			  			_this.showTable();

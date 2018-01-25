@@ -48,18 +48,13 @@ function setup(db) {
 		}
 	});
 	// TableColumns.sync();
-
-
-
-	var JExcel = db.define('jExcel', {
-		id:      {type: 'serial', key: true}, // the auto-incrementing primary key
-		tableColumns_id:    {type: 'integer'},
-		value: {type: 'text', size: 1000 }
-	}, {	
-
-	});	// JExcel
-
-	//
+	
+	// crate the jExcel table if not exists, will contain all data to jexcel
+	db.driver.execQuery(" CREATE TABLE IF NOT EXISTS "+ config.tableName +" ( id INT(7) UNSIGNED AUTO_INCREMENT PRIMARY KEY ) ", function(err,res) {
+		if (err) {
+  			swal('Error', err.msg, 'warning');
+		}
+	});
 
 	db.syncPromise();
 } // setup()

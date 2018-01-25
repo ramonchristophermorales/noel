@@ -33,33 +33,28 @@ module.exports = {
 
 	ready: function() {
 		var _this = this;
-		// console.log(search);
-		$(document).ready(function() {
-			setTimeout( function() { 
-				// _this.test(); 
-			}, 1000);
-		});
+		
+		this.showTable();
+
 	},
 
-	test: function() {
+	showTable: function() {
+
 		database( function(err, db) {
 		  	if (err) {
 	  			swal('Error', err.msg, 'warning');
 	  			return false;
   			}
 
-  			var JExcel = db.models.jExcel;
+  			var sql = " SELECT * FROM jExcel";
 
-			JExcel.find( {}, {order: 'id' }, function(err, res) {
+  			db.driver.execQuery(sql, function(err,res) {
+				if (err) {
+		  			swal('Error', err.msg, 'warning');
+				}
 
-					if (err) {
-			  			swal('Error', err.msg, 'warning');
-			  			return false;
-		  			}
-
-		  			console.log(res);
+				console.log(res);
 			});
-
 		});
 
 	},
