@@ -72,6 +72,7 @@ module.exports = new function() {
 		var _this = this;
 
 		database( function(err, db) {
+
 		  	if (err) {
 	  			swal('Error', typeof err.msg !== 'undefined' ? err.msg : 'Something went wrong.' , 'warning');
 	  			return false;
@@ -168,7 +169,8 @@ module.exports = new function() {
 		  			return false;
 	  			}
 
-	  			var oldName = res.name;
+	  			var prevName = res.name;
+	  			var prevAlias = res.name;
 
 	  			res.alias = alias;
 	  			res.name = alias.replace(' ', '');
@@ -181,19 +183,19 @@ module.exports = new function() {
 		  			}
 
 		  			// add the column to jexcel table
-		  			var sql = " ALTER TABLE `" + config.tableName + "` CHANGE `" + oldName + "` `" + res.name + "` TEXT(1000) NULL";
+		  			var sql = " ALTER TABLE `" + config.tableName + "` CHANGE `" + prevName + "` `" + res.name + "` TEXT(1000) NULL";
 
+		  			// @todo here
 		  			db.driver.execQuery( sql , function(err,res1) {
 
-						if (err) {
-				  			swal('Error', typeof err.msg !== 'undefined' ? err.msg : 'Something went wrong.' , 'warning');
-				  			res.alias = oldValue.alias;
-				  			res.name = oldValue.name;
-				  			res.updated_at =  oldValue.updated_at;
-				  			res.save(function(err) {
-				  				console.log(err);
-				  			});
-						}
+						// if (err) {
+				  // 			swal('Error', typeof err.msg !== 'undefined' ? err.msg : 'Something went wrong.' , 'warning');
+				  // 			res.alias = prevName;
+				  // 			res.name = prevAlias;
+				  // 			res.save(function(err) {
+				  				
+				  // 			});
+						// }
 					});
 
 		  			_this.showTable();

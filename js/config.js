@@ -5,11 +5,11 @@
 
 module.exports = {
 
-	dbhost: 'rewardcenter.local',
+	dbhost: 'localhost',
 
 	dbuser: 'root',
 
-	dbpass: 'password123',
+	dbpass: '',
 
 	dbname: 'noel',
 
